@@ -5,6 +5,9 @@ const port = 3000;
 
 const app = express();
 
+// Serve static files from the "public" directory
+app.use(express.static('public'));
+
 // Create an HTTP server using Express
 const server = http.createServer(app);
 
@@ -15,7 +18,7 @@ const wss = new WebSocket.server({
 
 function originIsAllowed(origin) {
     // Define an array of allowed origins
-    const allowedOrigins = ['ws://localhost:3000'];
+    const allowedOrigins = ['http://localhost:3000'];
 
     // Check if the specified origin is in the allowedOrigins array
     return allowedOrigins.includes(origin);
@@ -32,7 +35,7 @@ wss.on('request', (request) => {
         ws.on('message', (message) => {
             console.log('Received: ', message);
             // Send a response back to the client
-            ws.send(`Server received: ${message}`);
+            ws.send(`Server received: ${message.utf8Data}`);
         });
 
         // Handle client disconnection
