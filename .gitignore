@@ -6,5 +6,7 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-#Node Modules
+# Node Modules
 node_modules/
+# Node.js Core
+jsLibraryMappings.xml
