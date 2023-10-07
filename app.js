@@ -1,6 +1,7 @@
 const WebSocket = require('websocket');
 const http = require('http');
 const express = require('express');
+const path = require("path");
 const port = 3000;
 
 const app = express();
@@ -46,6 +47,10 @@ wss.on('request', (request) => {
         // Reject the WebSocket connection from unallowed origin
         request.reject();
     }
+});
+
+app.get('/live', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/live.html'));
 });
 
 // Start the server
