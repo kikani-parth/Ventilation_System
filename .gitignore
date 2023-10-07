@@ -9,4 +9,4 @@
 # Node Modules
 node_modules/
 # Node.js Core
-jsLibraryMappings.xml
+.idea/jsLibraryMappings.xml
