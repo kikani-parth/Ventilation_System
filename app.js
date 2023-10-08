@@ -37,7 +37,17 @@ wss.on('request', (request) => {
 
         // Handle incoming messages from clients
         ws.on('message', (message) => {
-            console.log('Received: ', message);
+            try {
+                const data = message.utf8Data;
+                // Check if ws is defined and then publish the MQTT data
+                if (ws && ws.readyState === ws.OPEN) {
+                    // Send the received WebSocket message to MQTT
+                    client.publish('controller/settings', data);
+                }
+            } catch (error) {
+                console.error('Error parsing WebSocket message:', error);
+            }
+
         });
 
         // Handle client disconnection

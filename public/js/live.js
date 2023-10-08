@@ -36,15 +36,15 @@ modeToggle.addEventListener('change', () => {
 
 /* Pressure form event listener */
 const pressureForm = document.getElementById('pressureForm');
-pressureForm.addEventListener('submit', (e) => {
+pressureForm.addEventListener('change', (e) => {
     e.preventDefault();
 
     const pressureInput = document.getElementById('pressureInput');
 
     // Create a JSON message with the desired pressure value
     const message = {
-        topic: 'controller/settings',
-        pressure: pressureInput.value,
+        auto: true,
+        pressure: parseInt(pressureInput.value),    //store pressure as int value
     };
 
     // Send the JSON message to the server
