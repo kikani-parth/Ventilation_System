@@ -7,6 +7,7 @@
 <body>
 <h1>Live View</h1>
 
+<!-- Live page data  -->
 <div class="parameter">
     <strong>Fan Speed:</strong> <span id="fanSpeed">N/A</span> %
 </div>
@@ -23,6 +24,34 @@
     <strong>Temperature:</strong> <span id="temperature">N/A</span> °C
 </div>
 
+<!-- Mode Toggle -->
+<label class="toggle-switch">
+    <input type="checkbox" id="modeToggle">
+    <span class="slider"></span>
+</label>
+<span class="toggle-label">Auto</span>
+
+<!-- Pressure Slider -->
+<form id="pressureForm">
+    <div class="pressure-slider" id="pressureSlider">
+        <label for="pressureInput">Set Pressure:</label><br>
+        <span class="slider-range">0</span>
+        <input type="range" id="pressureInput" class="pressure-input" min="0" max="120" step="1" value="0">
+        <span class="slider-range">120</span><br>
+        <span id="sliderValue" class="slider-value">Value: 0</span> <!-- Display the current value here -->
+    </div>
+</form>
+
+<!-- Fan Speed Slider -->
+<form id="fanSpeedForm">
+    <div class="fan-speed-slider" id="fanSpeedSlider" style="display: none;">
+        <label for="fanSpeedInput">Set Fan Speed:</label><br>
+        <span class="slider-range">0</span>
+        <input type="range" id="fanSpeedInput" class="fan-speed-input" min="0" max="100" step="1" value="0">
+        <span class="slider-range">100</span><br>
+        <span id="fanSpeedValue" class="slider-value">Value: 0%</span> <!-- Display the current value here -->
+    </div>
+</form>
 
 <script src="js/live.js"></script>
 </body>
