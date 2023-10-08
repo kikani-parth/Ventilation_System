@@ -16,7 +16,7 @@ socket.addEventListener('message', (event) => {
     document.getElementById('temperature').textContent = message.temp;
 });
 
-// Mode Toggle
+/* Mode Toggle event listener */
 const modeToggle = document.getElementById('modeToggle');
 modeToggle.addEventListener('change', () => {
     const pressureSlider = document.getElementById('pressureSlider');
@@ -31,4 +31,46 @@ modeToggle.addEventListener('change', () => {
         pressureSlider.style.display = 'none';
         fanSpeedSlider.style.display = 'block';
     }
+});
+
+
+/* Pressure form event listener */
+const pressureForm = document.getElementById('pressureForm');
+pressureForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const pressureInput = document.getElementById('pressureInput');
+
+    // Create a JSON message with the desired pressure value
+    const message = {
+        topic: 'controller/settings',
+        pressure: pressureInput.value,
+    };
+
+    // Send the JSON message to the server
+    socket.send(JSON.stringify(message));
+
+    // Update the UI to reflect the desired pressure value immediately
+    //document.getElementById('pressure').textContent = desiredPressure;
+});
+
+
+/* Fan speed form event listener */
+const fanSpeedForm = document.getElementById('fanSpeedForm');
+fanSpeedForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const fanSpeedInput = document.getElementById('fanSpeedInput');
+
+    // Create a JSON message with the desired fan speed value
+    const message = {
+        topic: 'controller/settings',
+        fanSpeed: fanSpeedInput.value,
+    };
+
+    // Send the JSON message to the server
+    socket.send(JSON.stringify(message));
+
+    // You can also update the UI to reflect the desired fan speed value immediately if needed
+    //document.getElementById('fanSpeed').textContent = desiredFanSpeed + '%';
 });
