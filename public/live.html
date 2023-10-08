@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Live Page</title>
+    <link rel="stylesheet" type="text/css" href="css/live.css">
 </head>
 <body>
 <h1>Live View</h1>
@@ -23,13 +24,13 @@
 <div class="parameter">
     <strong>Temperature:</strong> <span id="temperature">N/A</span> °C
 </div>
+<br>
 
-<!-- Mode Toggle -->
+<!-- Stylish Toggle Switch -->
 <label class="toggle-switch">
     <input type="checkbox" id="modeToggle">
     <span class="slider"></span>
 </label>
-<span class="toggle-label">Auto</span>
 
 <!-- Pressure Slider -->
 <form id="pressureForm">
@@ -38,7 +39,7 @@
         <span class="slider-range">0</span>
         <input type="range" id="pressureInput" class="pressure-input" min="0" max="120" step="1" value="0">
         <span class="slider-range">120</span><br>
-        <span id="sliderValue" class="slider-value">Value: 0</span>
+        <span id="pressureValue" class="slider-value">0</span>
     </div>
 </form>
 
@@ -49,7 +50,7 @@
         <span class="slider-range">0</span>
         <input type="range" id="fanSpeedInput" class="fan-speed-input" min="0" max="100" step="1" value="0">
         <span class="slider-range">100</span><br>
-        <span id="fanSpeedValue" class="slider-value">Value: 0%</span>
+        <span id="fanSpeedValue" class="slider-value">0</span>
     </div>
 </form>
 

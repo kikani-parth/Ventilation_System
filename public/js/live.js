@@ -34,12 +34,27 @@ modeToggle.addEventListener('change', () => {
 });
 
 
+// Input event listener for the pressure slider
+const pressureInput = document.getElementById('pressureInput');
+const pressureValue = document.getElementById('pressureValue');
+pressureInput.addEventListener('input', () => {
+    // Update the pressureValue span with the current slider value
+    pressureValue.textContent = pressureInput.value;
+});
+
+// Input event listener for the fan speed slider
+const fanSpeedInput = document.getElementById('fanSpeedInput');
+const fanSpeedValue = document.getElementById('fanSpeedValue');
+fanSpeedInput.addEventListener('input', () => {
+    // Update the fanSpeedValue span with the current slider value
+    fanSpeedValue.textContent = fanSpeedInput.value;
+});
+
+
 /* Pressure form event listener */
 const pressureForm = document.getElementById('pressureForm');
 pressureForm.addEventListener('change', (e) => {
     e.preventDefault();
-
-    const pressureInput = document.getElementById('pressureInput');
 
     // Create a JSON message with the desired pressure value
     const message = {
@@ -56,8 +71,6 @@ pressureForm.addEventListener('change', (e) => {
 const fanSpeedForm = document.getElementById('fanSpeedForm');
 fanSpeedForm.addEventListener('change', (e) => {
     e.preventDefault();
-
-    const fanSpeedInput = document.getElementById('fanSpeedInput');
 
     // Create a JSON message with the desired fan speed value
     const message = {
