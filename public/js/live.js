@@ -49,28 +49,22 @@ pressureForm.addEventListener('change', (e) => {
 
     // Send the JSON message to the server
     socket.send(JSON.stringify(message));
-
-    // Update the UI to reflect the desired pressure value immediately
-    //document.getElementById('pressure').textContent = desiredPressure;
 });
 
 
 /* Fan speed form event listener */
 const fanSpeedForm = document.getElementById('fanSpeedForm');
-fanSpeedForm.addEventListener('submit', (e) => {
+fanSpeedForm.addEventListener('change', (e) => {
     e.preventDefault();
 
     const fanSpeedInput = document.getElementById('fanSpeedInput');
 
     // Create a JSON message with the desired fan speed value
     const message = {
-        topic: 'controller/settings',
-        fanSpeed: fanSpeedInput.value,
+        auto: false,
+        speed: parseInt(fanSpeedInput.value),   //store speed as int value
     };
 
     // Send the JSON message to the server
     socket.send(JSON.stringify(message));
-
-    // You can also update the UI to reflect the desired fan speed value immediately if needed
-    //document.getElementById('fanSpeed').textContent = desiredFanSpeed + '%';
 });

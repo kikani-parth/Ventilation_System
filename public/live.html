@@ -33,23 +33,23 @@
 
 <!-- Pressure Slider -->
 <form id="pressureForm">
-    <div class="pressure-slider" id="pressureSlider">
+    <div class="pressure-slider" id="pressureSlider" style="display: none;">
         <label for="pressureInput">Set Pressure:</label><br>
         <span class="slider-range">0</span>
         <input type="range" id="pressureInput" class="pressure-input" min="0" max="120" step="1" value="0">
         <span class="slider-range">120</span><br>
-        <span id="sliderValue" class="slider-value">Value: 0</span> <!-- Display the current value here -->
+        <span id="sliderValue" class="slider-value">Value: 0</span>
     </div>
 </form>
 
 <!-- Fan Speed Slider -->
 <form id="fanSpeedForm">
-    <div class="fan-speed-slider" id="fanSpeedSlider" style="display: none;">
+    <div class="fan-speed-slider" id="fanSpeedSlider">
         <label for="fanSpeedInput">Set Fan Speed:</label><br>
         <span class="slider-range">0</span>
         <input type="range" id="fanSpeedInput" class="fan-speed-input" min="0" max="100" step="1" value="0">
         <span class="slider-range">100</span><br>
-        <span id="fanSpeedValue" class="slider-value">Value: 0%</span> <!-- Display the current value here -->
+        <span id="fanSpeedValue" class="slider-value">Value: 0%</span>
     </div>
 </form>
 

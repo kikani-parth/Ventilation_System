@@ -47,7 +47,6 @@ wss.on('request', (request) => {
             } catch (error) {
                 console.error('Error parsing WebSocket message:', error);
             }
-
         });
 
         // Handle client disconnection
