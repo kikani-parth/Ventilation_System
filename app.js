@@ -1,6 +1,7 @@
 const WebSocket = require('websocket');
 const http = require('http');
 const express = require('express');
+const mqtt = require('mqtt');
 const path = require("path");
 const port = 3000;
 
@@ -30,7 +31,7 @@ wss.on('request', (request) => {
     if (originIsAllowed(request.origin)) {
         // Accept the WebSocket connection
         const ws = request.accept(null, request.origin);
-        console.log('Client connected');
+        console.log('Client connected at:', request.origin);
 
         // Handle incoming messages from clients
         ws.on('message', (message) => {
@@ -47,6 +48,30 @@ wss.on('request', (request) => {
         // Reject the WebSocket connection from unallowed origin
         request.reject();
     }
+});
+
+
+// MQTT broker URL
+const brokerUrl = 'mqtt://127.0.0.1:1883';      //localhost
+
+// Creating MQTT client instance
+const client = mqtt.connect(brokerUrl);
+
+// Handling mqtt events
+client.on('connect', () => {
+    console.log('Connected to MQTT broker');
+
+    // Subscribe to the topic
+    client.subscribe('controller/status', (err) => {
+        if (!err) {
+            console.log('Subscribed to controller/status');
+        }
+    });
+});
+
+// Handling incoming messages
+client.on('message', (topic, message) => {
+    console.log('Received message:', message.toString());
 });
 
 app.get('/live', (req, res) => {
