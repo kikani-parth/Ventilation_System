@@ -16,7 +16,8 @@ const server = http.createServer(app);
 // Create a WebSocket server by passing the HTTP server
 const wss = new WebSocket.server({
     httpServer: server,
-    autoAcceptConnections: false });
+    autoAcceptConnections: false
+});
 
 function originIsAllowed(origin) {
     // Define an array of allowed origins
@@ -67,6 +68,25 @@ client.on('connect', () => {
             console.log('Subscribed to controller/status');
         }
     });
+});
+
+//Handling connections errors
+const maxRetries = 3; // Maximum retry attempts
+let retryCount = 0;
+client.on('error', (error) => {
+    console.error('MQTT Error:', error.message);
+
+    if (retryCount < maxRetries) {
+        // Retry the connection after a delay
+        setTimeout(() => {
+            console.log('Retrying MQTT connection...');
+            client.reconnect();
+        }, 2000);
+
+        retryCount++;
+    } else {
+        console.error('Max retry attempts reached. Aborting connection.');
+    }
 });
 
 // Handling incoming messages
