@@ -14,5 +14,21 @@ socket.addEventListener('message', (event) => {
     document.getElementById('co2Level').textContent = message.co2;
     document.getElementById('rh').textContent = message.rh;
     document.getElementById('temperature').textContent = message.temp;
+});
 
+// Mode Toggle
+const modeToggle = document.getElementById('modeToggle');
+modeToggle.addEventListener('change', () => {
+    const pressureSlider = document.getElementById('pressureSlider');
+    const fanSpeedSlider = document.getElementById('fanSpeedSlider');
+
+    if (modeToggle.checked) {
+        // Auto mode (Show pressure slider, hide fan speed slider)
+        pressureSlider.style.display = 'block';
+        fanSpeedSlider.style.display = 'none';
+    } else {
+        // Manual mode (Show fan speed slider, hide pressure slider)
+        pressureSlider.style.display = 'none';
+        fanSpeedSlider.style.display = 'block';
+    }
 });
