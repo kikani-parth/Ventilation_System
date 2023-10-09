@@ -21,7 +21,7 @@ h1 {
     text-align: left;
     width: 200px;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow */
 }
 
 .parameter strong {
@@ -29,7 +29,7 @@ h1 {
     font-weight: bold;
 }
 
-/* Stylish Toggle Switch */
+/* Toggle Switch */
 .toggle-switch {
     display: inline-block;
     position: relative;
@@ -45,7 +45,7 @@ h1 {
     display: none; /* Hide the checkbox input */
 }
 
-.slider {
+.toggle-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -57,7 +57,7 @@ h1 {
     transition: 0.4s; /* Add a smooth transition effect */
 }
 
-.slider:before {
+.toggle-slider:before {
     position: absolute;
     content: "Auto"; /* Display "Auto" inside the slider */
     height: 100%;
@@ -69,12 +69,11 @@ h1 {
     transition: 0.4s; /* Add a smooth transition effect */
 }
 
-input:checked + .slider {
+input:checked + .toggle-slider {
     background-color: #f60; /* Set the switch background color to orange when checked */
 }
 
-input:checked + .slider:before {
-
+input:checked + .toggle-slider:before {
     left: 0; /* Move "Auto" text inside the switch when checked */
 }
 
