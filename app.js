@@ -116,10 +116,16 @@ client.on('message', (topic, message) => {
     db.store(data);
 });
 
+/* Routes */
 
-//Live page route
+//Live page
 app.get('/live', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public/live.html'));
+});
+
+// Charts page
+app.get('/charts', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/charts.html'));
 });
 
 
