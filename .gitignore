@@ -13,3 +13,5 @@ node_modules/
 # IntelliJ IDEA project files
 *.iml
 .idea/
+#DB Navigator
+.idea/dbnavigator.xml
