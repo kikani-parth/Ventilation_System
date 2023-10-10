@@ -17,6 +17,22 @@
 </div>
 
 <div>
+    <!-- Date and time input fields for selecting time range -->
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate">
+    <label for="startTime">Start Time:</label>
+    <input type="time" id="startTime">
+    <br>
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate">
+    <label for="endTime">End Time:</label>
+    <input type="time" id="endTime">
+
+    <!-- Button to update the chart based on the selected time range -->
+    <button id="updateChart">Update Chart</button>
+</div>
+
+<div>
     <canvas id="chartId"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
