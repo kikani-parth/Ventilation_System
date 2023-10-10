@@ -42,6 +42,7 @@ wss.on('request', (request) => {
                 // Check if ws is defined and then publish the MQTT data
                 if (ws && ws.readyState === ws.OPEN) {
                     // Send the received WebSocket message to MQTT
+                    console.log(data);
                     client.publish('controller/settings', data);
                 }
             } catch (error) {
@@ -63,7 +64,7 @@ wss.on('request', (request) => {
 /* MQTT */
 
 // MQTT broker URL
-const brokerUrl = 'mqtt://127.0.0.1:1883';      //localhost
+const brokerUrl = 'mqtt://192.168.1.60:1883';      //classroom->"192.168.1.254"
 
 // Creating MQTT client instance
 const client = mqtt.connect(brokerUrl);
