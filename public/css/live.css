@@ -1,0 +1,103 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Set the background color to a light grey */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+h1 {
+    color: #333; /* Set the title color to dark grey */
+}
+
+/* Parameters section styles */
+.parameter {
+    background-color: #fff; /* Set the parameter background color to white */
+    border: 1px solid #ddd; /* Add a light grey border */
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    text-align: left;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow */
+}
+
+.parameter strong {
+    color: #f60; /* Set the title color to orange */
+    font-weight: bold;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background-color: #ccc; /* Set the switch background color to light grey */
+    border-radius: 15px;
+    margin-top: 20px;
+    overflow: hidden; /* Hide overflow content */
+}
+
+.toggle-switch input {
+    display: none; /* Hide the checkbox input */
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f60; /* Set the slider background color to orange */
+    border-radius: 15px; /* Rounded corners to match the switch */
+    transition: 0.4s; /* Add a smooth transition effect */
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "Auto"; /* Display "Auto" inside the slider */
+    height: 100%;
+    width: 60px; /* Match the switch width */
+    left: -60px; /* Move "Auto" text outside the switch */
+    line-height: 30px; /* Center the text vertically */
+    background-color: #f60; /* Set the slider button color to orange */
+    border-radius: 50%;
+    transition: 0.4s; /* Add a smooth transition effect */
+}
+
+input:checked + .toggle-slider {
+    background-color: #f60; /* Set the switch background color to orange when checked */
+}
+
+input:checked + .toggle-slider:before {
+    left: 0; /* Move "Auto" text inside the switch when checked */
+}
+
+/* Slider styles */
+.slider-range {
+    color: #333; /* Set the slider range color to dark grey */
+    font-weight: bold;
+}
+
+.pressure-slider,
+.fan-speed-slider {
+    margin-top: 20px;
+}
+
+.pressure-input,
+.fan-speed-input {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Slider value styles */
+.slider-value {
+    color: #f60; /* Set the slider value color to orange */
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
