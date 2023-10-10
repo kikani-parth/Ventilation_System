@@ -1,4 +1,4 @@
-const {MongoClient, ServerApiVersion} = require('mongodb');
+const {MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 
 const uri = "mongodb://127.0.0.1:27017";    // MongoDB connection URI
 const dbName = "VentilationSystemData";     // Database name
@@ -35,20 +35,21 @@ function store(data){
         .catch((error) => console.error('Error inserting data:', error));
 }
 
-// Read all data from MongoDB
-function read(){
+// Read data from MongoDB
+function read(query){
     try {
-        return collection.find({}).toArray();
+        return collection.find(query).toArray();
     } catch (error) {
         console.error('Error retrieving data from MongoDB:', error);
     }
 }
 
 
-
-// Export the functions and the collection object
 module.exports = {
-    collection,
+    collection,     // Collection object
+    ObjectId,       // ObjectId object
+
+    // Functions
     store,
     read,
 };
