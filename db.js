@@ -20,7 +20,7 @@ function connectToDatabase() {
         const db = mongoClient.db(dbName);
 
         // Specify and return the collection
-        return db.collection('SensorData');
+        return db.collection('SensorData1');
     } catch (error) {
         console.log("Error connecting to the database");
     }
@@ -43,6 +43,8 @@ function read(){
         console.error('Error retrieving data from MongoDB:', error);
     }
 }
+
+
 
 // Export the functions and the collection object
 module.exports = {

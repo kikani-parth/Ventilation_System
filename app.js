@@ -30,11 +30,15 @@ function originIsAllowed(origin) {
 
 // WebSocket server event handlers
 let ws;
-wss.on('request', (request) => {
+wss.on('request', async (request) => {
     if (originIsAllowed(request.origin)) {
         // Accept the WebSocket connection
         ws = request.accept(null, request.origin);
         console.log('Client connected at:', request.origin);
+
+        // Get all MongoDB data
+        const data = await db.read()
+        ws.send(JSON.stringify(data));          //send the data to the client
 
         // Handle incoming messages from clients
         ws.on('message', (message) => {
@@ -43,6 +47,7 @@ wss.on('request', (request) => {
                 // Check if ws is defined and then publish the MQTT data
                 if (ws && ws.readyState === ws.OPEN) {
                     // Send the received WebSocket message to MQTT
+                    console.log(data);
                     client.publish('controller/settings', data);
                 }
             } catch (error) {
@@ -64,7 +69,7 @@ wss.on('request', (request) => {
 /* MQTT */
 
 // MQTT broker URL
-const brokerUrl = 'mqtt://127.0.0.1:1883';      //localhost
+const brokerUrl = 'mqtt://192.168.1.60:1883';      //classroom->"192.168.1.254"
 
 // Creating MQTT client instance
 const client = mqtt.connect(brokerUrl);
@@ -115,10 +120,16 @@ client.on('message', (topic, message) => {
     db.store(data);
 });
 
+/* Routes */
 
-//Live page route
+//Live page
 app.get('/live', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public/live.html'));
+});
+
+// Charts page
+app.get('/charts', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/charts.html'));
 });
 
 
