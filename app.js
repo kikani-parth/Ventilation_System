@@ -4,6 +4,7 @@ const express = require('express');
 const mqtt = require('mqtt');
 const path = require("path");
 const db = require('./db');
+const {read} = require("./db");
 const port = 3000;
 
 const app = express();
@@ -30,25 +31,45 @@ function originIsAllowed(origin) {
 
 // WebSocket server event handlers
 let ws;
-wss.on('request', async (request) => {
+wss.on('request', (request) => {
     if (originIsAllowed(request.origin)) {
         // Accept the WebSocket connection
         ws = request.accept(null, request.origin);
         console.log('Client connected at:', request.origin);
 
-        // Get all MongoDB data
-        const data = await db.read()
-        ws.send(JSON.stringify(data));          //send the data to the client
-
         // Handle incoming messages from clients
-        ws.on('message', (message) => {
+        ws.on('message', async (message) => {
             try {
-                const data = message.utf8Data;
-                // Check if ws is defined and then publish the MQTT data
-                if (ws && ws.readyState === ws.OPEN) {
-                    // Send the received WebSocket message to MQTT
-                    console.log(data);
-                    client.publish('controller/settings', data);
+                let data = JSON.parse(message.utf8Data);
+
+                // If data contains an auto field, it is a MQTT message
+                if ('auto' in data) {
+                    // Check if ws is defined and then publish the MQTT data
+                    if (ws && ws.readyState === ws.OPEN) {
+                        // Send the received WebSocket message to MQTT
+                        console.log(data);
+                        client.publish('controller/settings', message.utf8Data);
+                    }
+                }
+                // Else, the received message is from the date & time picker
+                else {
+                    // Convert start and end time to seconds
+                    const startTimeInSeconds = Math.floor(new Date(data.startDate + 'T' + data.startTime) / 1000);
+                    const endTimeInSeconds = Math.floor(new Date(data.endDate + 'T' + data.endTime) / 1000);
+
+                    // Query based on the user's date and time selection
+                    const query = {
+                        _id: {
+                            $gte: db.ObjectId.createFromTime(startTimeInSeconds),
+                            $lte: db.ObjectId.createFromTime(endTimeInSeconds)
+                        }
+                    };
+
+                    // Retrieve data from MongoDB based on the query
+                    const filteredData = await read(query);
+
+                    // Send the filtered data to the client
+                    ws.send(JSON.stringify(filteredData));
                 }
             } catch (error) {
                 console.error('Error parsing WebSocket message:', error);

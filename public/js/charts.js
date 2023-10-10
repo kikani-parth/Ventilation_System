@@ -1,8 +1,39 @@
 const socket = new WebSocket('ws://localhost:3000/charts');
 
+// Add an event listener for the "Update Chart" button
+document.getElementById('updateChart').addEventListener('click', () => {
+    // Get the selected chart type
+    const selectedChartType = document.getElementById('chartType').value;
+
+    // Get the start and end date values
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    // Get the start and end time values
+    const startTime = document.getElementById('startTime').value;
+    const endTime = document.getElementById('endTime').value;
+
+    const userInput = {
+        chartType: selectedChartType,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+    };
+
+    // Send the userInput to the server
+    socket.send(JSON.stringify(userInput));
+});
+
+
 let mongoDBData, chartData, chart;
 socket.addEventListener('message', (event) => {
     const rawData = JSON.parse(event.data);
+
+    // If it is an MQTT message, exit the function
+    if ('topic' in rawData) {
+        return;
+    }
 
     // Check if rawData is an object and wrap it in an array if needed
     if (Array.isArray(rawData)) {
@@ -100,3 +131,4 @@ function updateChart() {
     // Update the chart
     chart.update();
 }
+
