@@ -28,15 +28,25 @@ function connectToDatabase() {
 
 const collection = connectToDatabase();
 
-// Store data in MongoDB
+// Store data (one document) in MongoDB
 function store(data){
     collection.insertOne(data)
         .then(() => console.log('Data inserted successfully!'))
         .catch((error) => console.error('Error inserting data:', error));
 }
 
+// Read all data from MongoDB
+function read(){
+    try {
+        return collection.find({}).toArray();
+    } catch (error) {
+        console.error('Error retrieving data from MongoDB:', error);
+    }
+}
+
 // Export the functions and the collection object
 module.exports = {
     collection,
     store,
+    read,
 };
