@@ -6,8 +6,20 @@
 </head>
 <body>
 <div>
+    <!-- Dropdown menu for selecting chart type -->
+    <label for="chartType">Select Chart Type:</label>
+    <select id="chartType">
+        <option value="bar">Bar Chart</option>
+        <option value="line">Line Chart</option>
+        <option value="pie">Pie Chart</option>
+        <option value="doughnut">Donut Chart</option>
+    </select>
+</div>
+
+<div>
     <canvas id="chartId"></canvas>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/charts.js"></script>
 </body>
 </html>

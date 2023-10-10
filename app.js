@@ -30,11 +30,15 @@ function originIsAllowed(origin) {
 
 // WebSocket server event handlers
 let ws;
-wss.on('request', (request) => {
+wss.on('request', async (request) => {
     if (originIsAllowed(request.origin)) {
         // Accept the WebSocket connection
         ws = request.accept(null, request.origin);
         console.log('Client connected at:', request.origin);
+
+        // Get all MongoDB data
+        const data = await db.read()
+        ws.send(JSON.stringify(data));          //send the data to the client
 
         // Handle incoming messages from clients
         ws.on('message', (message) => {
