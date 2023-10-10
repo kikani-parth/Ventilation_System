@@ -30,6 +30,11 @@ let mongoDBData, chartData, chart;
 socket.addEventListener('message', (event) => {
     const rawData = JSON.parse(event.data);
 
+    // If it is an MQTT message, exit the function
+    if ('topic' in rawData) {
+        return;
+    }
+
     // Check if rawData is an object and wrap it in an array if needed
     if (Array.isArray(rawData)) {
         mongoDBData = rawData;
