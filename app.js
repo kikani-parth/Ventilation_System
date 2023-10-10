@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const mqtt = require('mqtt');
 const path = require("path");
+const db = require('./db');
 const port = 3000;
 
 const app = express();
@@ -109,6 +110,10 @@ client.on('message', (topic, message) => {
         // Send the message as JSON
         ws.send(JSON.stringify({topic, message: message.toString()}));
     }
+
+    //Store the data in MongoDB
+    const data = JSON.parse(message.toString());
+    db.store(data);
 });
 
 
