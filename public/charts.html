@@ -5,18 +5,17 @@
   <title>Charts</title>
 </head>
 <body>
-<div>
+<div class="chart-menu">
     <!-- Dropdown menu for selecting chart type -->
     <label for="chartType">Select Chart Type:</label>
     <select id="chartType">
         <option value="bar">Bar Chart</option>
         <option value="line">Line Chart</option>
-        <option value="pie">Pie Chart</option>
-        <option value="doughnut">Donut Chart</option>
+        <option value="doughnut">Doughnut Chart</option>
     </select>
 </div>
 
-<div>
+<div id="rangeSelector">
     <!-- Date and time input fields for selecting time range -->
     <label for="startDate">Start Date:</label>
     <input type="date" id="startDate" required>
@@ -27,10 +26,17 @@
     <input type="date" id="endDate" required>
     <label for="endTime">End Time:</label>
     <input type="time" id="endTime" required>
-
-    <!-- Button to update the chart based on the selected time range -->
-    <button id="updateChart">Update Chart</button>
 </div>
+
+<!-- Input fields for Doughnut chart -->
+<div id="doughnutChartInput" style="display: none;">
+    <!-- Input field for 'nr' -->
+    <label for="nr">Select sample nr (Starts from 0):</label>
+    <input type="number" id="nr" required min="0">
+</div>
+
+<!-- Button to update the chart based on the selected time range -->
+<button id="updateChart">Update Chart</button>
 
 <div>
     <canvas id="chartId"></canvas>
