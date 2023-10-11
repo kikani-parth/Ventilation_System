@@ -13,6 +13,12 @@ document.getElementById('updateChart').addEventListener('click', () => {
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
 
+    // Check if all fields are filled
+    if (!startDate || !endDate || !startTime || !endTime) {
+        alert('Please fill all the fields!');
+        return;
+    }
+
     // Construct date objects
     const startDateObj = new Date(startDate + 'T' + startTime);
     const endDateObj = new Date(endDate + 'T' + endTime);
@@ -42,6 +48,12 @@ socket.addEventListener('message', (event) => {
 
     // If it is an MQTT message, exit the function
     if ('topic' in rawData) {
+        return;
+    }
+
+    // If no data is available for the requested range, alert the user and exit the event listener
+    if ('error' in rawData) {
+        alert('No data available for the selected range!');
         return;
     }
 

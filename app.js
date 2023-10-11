@@ -68,8 +68,15 @@ wss.on('request', (request) => {
                     // Retrieve data from MongoDB based on the query
                     const filteredData = await read(query);
 
-                    // Send the filtered data to the client
-                    ws.send(JSON.stringify(filteredData));
+                    // Check if the requested data is available in MongoDB
+                    if (filteredData.length === 0) {
+                        ws.send(JSON.stringify({error: 'No data found for the selected range'}));
+                    } else {
+                        // Send the filtered data to the client
+                        ws.send(JSON.stringify(filteredData));
+                    }
+
+
                 }
             } catch (error) {
                 console.error('Error parsing WebSocket message:', error);
