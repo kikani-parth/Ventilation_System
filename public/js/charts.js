@@ -1,9 +1,13 @@
 const socket = new WebSocket('ws://localhost:3000/charts');
 
+let chartType, previousChartType;
 // Add an event listener for the "Update Chart" button
 document.getElementById('updateChart').addEventListener('click', () => {
+    // Store the previous chart type value (if any)
+    previousChartType = chartType;
+
     // Get the selected chart type
-    const selectedChartType = document.getElementById('chartType').value;
+    chartType = document.getElementById('chartType').value;
 
     // Get the start and end date values
     const startDate = document.getElementById('startDate').value;
@@ -13,7 +17,7 @@ document.getElementById('updateChart').addEventListener('click', () => {
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
 
-    // Check if all fields are filled
+    // Check if all the fields are filled
     if (!startDate || !endDate || !startTime || !endTime) {
         alert('Please fill all the fields!');
         return;
@@ -30,7 +34,6 @@ document.getElementById('updateChart').addEventListener('click', () => {
     }
 
     const userInput = {
-        chartType: selectedChartType,
         startDate,
         endDate,
         startTime,
@@ -73,6 +76,8 @@ socket.addEventListener('message', (event) => {
 
 });
 
+let canvasElement;
+
 function createChart() {
     // Extract the relevant data for the chart
     chartData = mongoDBData.map(item => ({
@@ -84,11 +89,26 @@ function createChart() {
         temp: item.temp
     }));
 
-
     // Get the canvas element and its context
-    let canvasElement = document.getElementById('chartId').getContext('2d');
+    canvasElement = document.getElementById('chartId').getContext('2d');
 
-    // Chart creation
+    // Chart creation based on the selected type
+    switch (chartType) {
+        case 'bar':
+            createBarChart();
+            break;
+        case 'line':
+            createLineChart();
+            break;
+        default:
+            console.error('Invalid chart type:', chartType);
+            return;
+    }
+
+
+}
+
+function createBarChart() {
     chart = new Chart(canvasElement, {
         type: 'bar',
         data: {
@@ -141,6 +161,62 @@ function createChart() {
     })
 }
 
+function createLineChart() {
+    chart = new Chart(canvasElement, {
+        type: 'line',
+        data: {
+            labels: chartData.map(item => item.nr),
+            datasets: [
+                {
+                    label: 'Speed',
+                    data: chartData.map(item => item.speed),
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'Pressure',
+                    data: chartData.map(item => item.pressure),
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'CO2',
+                    data: chartData.map(item => item.co2),
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'RH',
+                    data: chartData.map(item => item.rh),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'Temperature',
+                    data: chartData.map(item => item.temp),
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
 function updateChart() {
     // Extract the relevant data for the chart
     chartData = mongoDBData.map(item => ({
@@ -160,7 +236,26 @@ function updateChart() {
     chart.data.datasets[3].data = chartData.map(item => item.rh);
     chart.data.datasets[4].data = chartData.map(item => item.temp);
 
-    // Update the chart
-    chart.update();
+    // Check if chart type has changed
+    if (chartType !== previousChartType) {
+        // Remove existing chart
+        chart.destroy();
+
+        // Chart creation based on the new selected type
+        switch (chartType) {
+            case 'bar':
+                createBarChart();
+                break;
+            case 'line':
+                createLineChart();
+                break;
+            default:
+                console.error('Invalid chart type:', chartType);
+                return;
+        }
+    } else {
+        // Update the previous chart
+        chart.update();
+    }
 }
 
