@@ -13,6 +13,16 @@ document.getElementById('updateChart').addEventListener('click', () => {
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
 
+    // Construct date objects
+    const startDateObj = new Date(startDate + 'T' + startTime);
+    const endDateObj = new Date(endDate + 'T' + endTime);
+
+    // Validate user input
+    if (startDateObj >= endDateObj) {
+        alert('\'End date or time\' should be after \'Start date or time\'.');
+        return;
+    }
+
     const userInput = {
         chartType: selectedChartType,
         startDate,
@@ -120,6 +130,16 @@ function createChart() {
 }
 
 function updateChart() {
+    // Extract the relevant data for the chart
+    chartData = mongoDBData.map(item => ({
+        nr: item.nr,
+        speed: item.speed,
+        pressure: item.pressure,
+        co2: item.co2,
+        rh: item.rh,
+        temp: item.temp
+    }));
+
     // Update the chart data and options
     chart.data.labels = chartData.map(item => item.nr);
     chart.data.datasets[0].data = chartData.map(item => item.speed);
