@@ -51,8 +51,8 @@ wss.on('request', (request) => {
                         client.publish('controller/settings', message.utf8Data);
                     }
                 }
-                // Else, the received message is from the date & time picker
-                else {
+                // Check if the received message is from the date & time picker
+                else if ('startDate' in data) {
                     // Convert start and end time to seconds
                     const startTimeInSeconds = Math.floor(new Date(data.startDate + 'T' + data.startTime) / 1000);
                     const endTimeInSeconds = Math.floor(new Date(data.endDate + 'T' + data.endTime) / 1000);
@@ -70,13 +70,24 @@ wss.on('request', (request) => {
 
                     // Check if the requested data is available in MongoDB
                     if (filteredData.length === 0) {
-                        ws.send(JSON.stringify({error: 'No data found for the selected range'}));
+                        ws.send(JSON.stringify({rangeError: 'No data found for the selected range'}));
                     } else {
                         // Send the filtered data to the client
                         ws.send(JSON.stringify(filteredData));
                     }
+                }
+                // Else, the received message contains sample nr
+                else {
+                    const samplenr = {nr: parseInt(data.nr)};
+                    const result = await db.collection.findOne(samplenr);
 
-
+                    // Check if the requested document exists
+                    if (!result) {
+                        ws.send(JSON.stringify({nrError: 'No data found for the requested sample nr'}));
+                    } else {
+                        // Send the result to the client
+                        ws.send(JSON.stringify(result));
+                    }
                 }
             } catch (error) {
                 console.error('Error parsing WebSocket message:', error);
