@@ -108,7 +108,7 @@ wss.on('request', (request) => {
 /* MQTT */
 
 // MQTT broker URL
-const brokerUrl = 'mqtt://10.72.194.123:1883';      //classroom->"192.168.1.254"
+const brokerUrl = 'mqtt://192.168.1.60:1883';      //classroom->"192.168.1.254"
 
 // Creating MQTT client instance
 const client = mqtt.connect(brokerUrl);
@@ -153,7 +153,6 @@ client.on('message', (topic, message) => {
         // Send the message as JSON
         ws.send(JSON.stringify({topic, message: message.toString()}));
     }
-
     //Store the data in MongoDB
     const data = JSON.parse(message.toString());
     db.store(data);
