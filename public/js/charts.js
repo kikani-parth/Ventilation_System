@@ -97,33 +97,34 @@ function toggleInputDisplay() {
 
 let mongoDBData, chartData, chart;
 socket.addEventListener('message', (event) => {
-    const rawData = JSON.parse(event.data);
+    chartData = JSON.parse(event.data);
 
     // If it is an MQTT message, exit the function
-    if ('topic' in rawData) {
+    if ('topic' in chartData) {
         return;
     }
 
     /* Database Error Handling */
 
     // If no data is available for the requested range, alert the user and exit the event listener
-    if ('rangeError' in rawData) {
+    if ('rangeError' in chartData) {
         alert('No data available for the selected range!');
         return;
     }
     // Else if no MongoDB document found for the requested sample nr, alert the user and exit the event listener
-    else if ('nrError' in rawData) {
+    else if ('nrError' in chartData) {
         alert('No data available for the requested sample number!');
         return;
     }
 
-    // Check if rawData is an object and wrap it in an array if needed
-    if (Array.isArray(rawData)) {
-        mongoDBData = rawData;
+    /*
+    // Check if chartData is an object and wrap it in an array if needed
+    if (Array.isArray(chartData)) {
+        mongoDBData = chartData;
     } else {
-        mongoDBData = [rawData];
+        mongoDBData = [chartData];
     }
-
+*/
     // If a chart does not exist, create a new chart. Otherwise, update the existing chart
     if (!chart) {
         createChart();
@@ -136,6 +137,7 @@ socket.addEventListener('message', (event) => {
 let canvasElement;
 
 function createChart() {
+    /*
     // Extract the relevant data for the chart
     chartData = mongoDBData.map(item => ({
         nr: item.nr,
@@ -145,7 +147,7 @@ function createChart() {
         rh: item.rh,
         temp: item.temp
     }));
-
+*/
     // Get the canvas element and its context
     canvasElement = document.getElementById('chartId').getContext('2d');
 
@@ -302,11 +304,11 @@ function createDoughnutChart() {
             labels: ['Speed', 'Pressure', 'CO2', 'RH', 'Temperature'],
             datasets: [
                 {
-                    data: [chartData.map(item => item.speed),
-                        chartData.map(item => item.pressure),
-                        chartData.map(item => item.co2),
-                        chartData.map(item => item.rh),
-                        chartData.map(item => item.temp),
+                    data: [chartData.speed,
+                        chartData.pressure,
+                        chartData.co2,
+                        chartData.rh,
+                        chartData.temp,
                     ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 1)',
@@ -326,6 +328,7 @@ function createDoughnutChart() {
 }
 
 function updateChart() {
+    /*
     // Extract the relevant data for the chart
     chartData = mongoDBData.map(item => ({
         nr: item.nr,
@@ -335,7 +338,7 @@ function updateChart() {
         rh: item.rh,
         temp: item.temp
     }));
-
+*/
     // Check if chart type has changed
     if (chartType !== previousChartType) {
         // Remove existing chart
@@ -361,11 +364,11 @@ function updateChart() {
     else {
         if (chartType === 'doughnut') {
             // Update the chart data (for doughnut chart)
-            chart.data.datasets[0].data = [chartData.map(item => item.speed),
-                chartData.map(item => item.pressure),
-                chartData.map(item => item.co2),
-                chartData.map(item => item.rh),
-                chartData.map(item => item.temp),
+            chart.data.datasets[0].data = [chartData.speed,
+                chartData.pressure,
+                chartData.co2,
+                chartData.rh,
+                chartData.temp,
             ];
         } else {
             // Update the chart data (for bar chart or line chart)

@@ -42,7 +42,7 @@ wss.on('request', (request) => {
             try {
                 let data = JSON.parse(message.utf8Data);
 
-                // If data contains an auto field, it is a MQTT message
+                // If 'data' contains an 'auto' field, it is a MQTT message
                 if ('auto' in data) {
                     // Check if ws is defined and then publish the MQTT data
                     if (ws && ws.readyState === ws.OPEN) {
@@ -51,7 +51,7 @@ wss.on('request', (request) => {
                         client.publish('controller/settings', message.utf8Data);
                     }
                 }
-                // Check if the received message is from the date & time picker
+                // If 'data' contains a 'startDate' field, it is from the date & time picker (for displaying bar/line chart)
                 else if ('startDate' in data) {
                     // Convert start and end time to seconds
                     const startTimeInSeconds = Math.floor(new Date(data.startDate + 'T' + data.startTime) / 1000);
@@ -72,8 +72,18 @@ wss.on('request', (request) => {
                     if (filteredData.length === 0) {
                         ws.send(JSON.stringify({rangeError: 'No data found for the selected range'}));
                     } else {
-                        // Send the filtered data to the client
-                        ws.send(JSON.stringify(filteredData));
+                        // Extract the relevant data for the chart
+                        const chartData = filteredData.map(item => ({
+                            nr: item.nr,
+                            speed: item.speed,
+                            pressure: item.pressure,
+                            co2: item.co2,
+                            rh: item.rh,
+                            temp: item.temp
+                        }));
+
+                        // Send the filtered chart data to the client
+                        ws.send(JSON.stringify(chartData));
                     }
                 }
                 // Else, the received message contains sample nr
