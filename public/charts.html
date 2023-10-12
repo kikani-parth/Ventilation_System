@@ -3,13 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Charts</title>
+    <style>
+        #chartId {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 <div class="chart-menu">
     <!-- Dropdown menu for selecting chart type -->
     <label for="chartType">Select Chart Type:</label>
     <select id="chartType">
-        <option value="bar">Bar Chart</option>
+        <option value="bar">Stacked Bar Chart</option>
         <option value="line">Line Chart</option>
         <option value="doughnut">Doughnut Chart</option>
     </select>

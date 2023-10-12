@@ -36,6 +36,9 @@ document.getElementById('updateChart').addEventListener('click', () => {
         // Send the nr to the server
         socket.send(JSON.stringify(samplenr));
     } else {
+        // Get the selected chart type
+        chartType = document.getElementById('chartType').value;
+
         // Get the start and end date values
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
@@ -161,11 +164,10 @@ function createChart() {
             console.error('Invalid chart type:', chartType);
             return;
     }
-
-
 }
 
 function createBarChart() {
+    let delayed;
     chart = new Chart(canvasElement, {
         type: 'bar',
         data: {
@@ -209,8 +211,27 @@ function createBarChart() {
             ]
         },
         options: {
+            aspectRatio: 2.7,
+            maintainAspectRatio: false,
+            // Set a delay animation
+            animation: {
+                onComplete: () => {
+                    delayed = true;
+                },
+                delay: (context) => {
+                    let delay = 0;
+                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                        delay = context.dataIndex * 150 + context.datasetIndex * 50;
+                    }
+                    return delay;
+                },
+            },
             scales: {
+                x: {
+                    stacked: true   // Stack the bar graph
+                },
                 y: {
+                    stacked: true,
                     beginAtZero: true
                 }
             }
@@ -304,7 +325,6 @@ function createDoughnutChart() {
     });
 }
 
-
 function updateChart() {
     // Extract the relevant data for the chart
     chartData = mongoDBData.map(item => ({
@@ -321,7 +341,7 @@ function updateChart() {
         // Remove existing chart
         chart.destroy();
 
-        // Chart creation based on the new selected type
+        // Create new chart based on the selected type
         switch (chartType) {
             case 'bar':
                 createBarChart();
@@ -336,7 +356,9 @@ function updateChart() {
                 console.error('Invalid chart type:', chartType);
                 return;
         }
-    } else {
+    }
+    // If chart type has not changed, update the existing chart with new datasets
+    else {
         if (chartType === 'doughnut') {
             // Update the chart data (for doughnut chart)
             chart.data.datasets[0].data = [chartData.map(item => item.speed),
