@@ -236,11 +236,23 @@ function newBarChart(data) {
             },
             scales: {
                 x: {
-                    stacked: true   // Stack the bar graph
+                    stacked: true,   // Stack the bar graph
+                    ticks: {
+                        color: 'black',
+                        font: {
+                            family: 'Roboto',
+                        },
+                    },
                 },
                 y: {
                     stacked: true,
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'black',
+                        font: {
+                            family: 'Roboto',
+                        },
+                    },
                 }
             }
         }
@@ -330,13 +342,24 @@ function newLineChart(data) {
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'black',
+                        font: {
+                            family: 'Roboto',
+                        },
+                    },
                 },
-                /*
+
                 y: {
-                    beginAtZero: false
+                    ticks: {
+                        color: 'black',
+                        font: {
+                            family: 'Roboto',
+                        },
+                    },
                 }
-                */
+
             },
 
         }
