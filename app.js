@@ -171,7 +171,7 @@ client.on('message', (topic, message) => {
 /* Routes */
 
 //Live page
-app.get('/live', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public/live.html'));
 });
 
