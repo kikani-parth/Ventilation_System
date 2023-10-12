@@ -8,6 +8,15 @@ socket.addEventListener('message', (event) => {
     const data = JSON.parse(event.data);
     const message = JSON.parse(data.message);
 
+    const notificationElement = document.getElementById('notification');
+    if (message.error) {
+        // Display the error message
+        notificationElement.textContent = 'Unable to reach target pressure!';
+        notificationElement.style.display = 'block';
+    } else {
+        notificationElement.style.display = 'none'; // Hide the notification
+    }
+
     //Update the live page fields
     document.getElementById('fanSpeed').textContent = message.speed;
     document.getElementById('pressure').textContent = message.pressure;
