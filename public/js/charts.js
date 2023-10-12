@@ -164,11 +164,10 @@ function createChart() {
             console.error('Invalid chart type:', chartType);
             return;
     }
-
-
 }
 
 function createBarChart() {
+    let delayed;
     chart = new Chart(canvasElement, {
         type: 'bar',
         data: {
@@ -212,10 +211,24 @@ function createBarChart() {
             ]
         },
         options: {
-            responsive: true,
+            aspectRatio: 2.7,
+            maintainAspectRatio: false,
+            // Set a delay animation
+            animation: {
+                onComplete: () => {
+                    delayed = true;
+                },
+                delay: (context) => {
+                    let delay = 0;
+                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                        delay = context.dataIndex * 150 + context.datasetIndex * 50;
+                    }
+                    return delay;
+                },
+            },
             scales: {
                 x: {
-                    stacked: true
+                    stacked: true   // Stack the bar graph
                 },
                 y: {
                     stacked: true,
@@ -311,7 +324,6 @@ function createDoughnutChart() {
         },
     });
 }
-
 
 function updateChart() {
     // Extract the relevant data for the chart
