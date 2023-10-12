@@ -326,9 +326,9 @@ function newLineChart(data) {
             ]
         },
         options: {
+            aspectRatio: 2.7,
+            maintainAspectRatio: false,
             scales: {
-                aspectRatio: 3,
-                maintainAspectRatio: false,
                 x: {
                     beginAtZero: true
                 },
@@ -337,7 +337,8 @@ function newLineChart(data) {
                     beginAtZero: false
                 }
                 */
-            }
+            },
+
         }
     });
 
@@ -375,6 +376,8 @@ function createDoughnutChart() {
             ],
         },
         options: {
+            aspectRatio: 2.7,
+            maintainAspectRatio: false,
             cutout: '50%',
             responsive: true,
         },
