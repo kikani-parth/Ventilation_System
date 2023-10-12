@@ -62,12 +62,13 @@ h1 {
 .toggle-switch {
     display: inline-block;
     position: relative;
-    width: 60px;
+    width: 100px;
     height: 30px;
     background-color: #ccc;
     border-radius: 15px;
     margin-top: 20px;
     overflow: hidden;
+    text-align: center;
 }
 
 .toggle-switch input {
@@ -81,30 +82,34 @@ h1 {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #f60;
+    background-color: #f60; /* Default background color */
     border-radius: 15px;
     transition: 0.4s;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
 }
 
 .toggle-slider:before {
+    content: "Manual"; /* Default text */
     position: absolute;
-    content: "Auto";
     height: 100%;
-    width: 60px;
-    left: -60px;
+    width: 50%;
     line-height: 30px;
-    background-color: #f60;
+    background-color: #f60; /* Default background color */
     border-radius: 50%;
     transition: 0.4s;
 }
 
 input:checked + .toggle-slider {
-    background-color: #f60;
+    background-color: #f60; /* Background color when checked */
 }
 
 input:checked + .toggle-slider:before {
-    left: 0;
+    content: "Auto"; /* Text when checked */
+    left: 25%;
 }
+
 
 /* Slider styles */
 .slider-range {
