@@ -3,14 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Charts</title>
-    <style>
-        #chartId {
-            max-width: 100%;
-            max-height: 100%;
-            width: 100%;
-            height: auto;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/charts.css">
 </head>
 <body>
 <div class="chart-menu">
@@ -29,7 +22,7 @@
     <input type="date" id="startDate" required>
     <label for="startTime">Start Time:</label>
     <input type="time" id="startTime" required>
-    <br>
+    <br><br>
     <label for="endDate">End Date:</label>
     <input type="date" id="endDate" required>
     <label for="endTime">End Time:</label>
@@ -39,15 +32,21 @@
 <!-- Input fields for Doughnut chart -->
 <div id="doughnutChartInput" style="display: none;">
     <!-- Input field for 'nr' -->
-    <label for="nr">Select sample nr (Starts from 0):</label>
+    <label for="nr">Enter sample nr (Starts from 0):</label>
     <input type="number" id="nr" required min="0">
 </div>
 
 <!-- Button to update the chart based on the selected time range -->
 <button id="updateChart">Update Chart</button>
 
-<div>
+<div id="canvas">
     <canvas id="chartId"></canvas>
+</div>
+
+<div id="pagination" style="text-align: center; display: none">
+    <button id="prevPage">Previous Page</button>
+    <span id="currentPage">Page 1</span>
+    <button id="nextPage">Next Page</button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/charts.js"></script>
