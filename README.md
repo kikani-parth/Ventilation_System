@@ -5,7 +5,7 @@ The UI has two pages:
 1. Live:
    The Ventilation  System data will be displayed in 'real time' on this page. The user can select between the 2 modes: Manual and Auto.
    - In Manual mode, the user can set the fan speed from  0 - 100 %.
-   - In Auto mode, The user can set the target pressure from 0 - 120 Pa
+   - In Auto mode, The user can set the target pressure from 0 - 120 Pa. If the target pressure cannot be reached within at most 100 seconds, an error message pops up on the page.
    
 2. Charts:
    On the charts page, the user can select between 3 types of charts to visualize Ventilation  System data: Stacked Bar Chart, Line Chart and a Doughnut Chart.
