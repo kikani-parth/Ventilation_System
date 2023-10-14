@@ -68,7 +68,7 @@ wss.on('request', (request) => {
                     // Retrieve data from MongoDB based on the query
                     const filteredData = await read(query);
 
-                    // Check if the requested data is available in MongoDB
+                    // If requested data is not found, send an error message to the client
                     if (filteredData.length === 0) {
                         ws.send(JSON.stringify({rangeError: 'No data found for the selected range'}));
                     } else {
@@ -86,12 +86,14 @@ wss.on('request', (request) => {
                         ws.send(JSON.stringify(chartData));
                     }
                 }
-                // Else, the received message contains sample nr
+                // Else, the received message contains sample nr (for displaying doughnut chart)
                 else {
                     const samplenr = {nr: parseInt(data.nr)};
+
+                    // Find the requested data from MongoDB
                     const result = await db.collection.findOne(samplenr);
 
-                    // Check if the requested document exists
+                    // If the requested data is not found send an error message to the client
                     if (!result) {
                         ws.send(JSON.stringify({nrError: 'No data found for the requested sample nr'}));
                     } else {
@@ -118,7 +120,7 @@ wss.on('request', (request) => {
 /* MQTT */
 
 // MQTT broker URL
-const brokerUrl = 'mqtt://192.168.1.60:1883';      //classroom->"192.168.1.254"
+const brokerUrl = 'mqtt://127.0.0.1:1883';
 
 // Creating MQTT client instance
 const client = mqtt.connect(brokerUrl);
@@ -170,7 +172,7 @@ client.on('message', (topic, message) => {
 
 /* Routes */
 
-//Live page
+//Live page (will be displayed at the home route)
 app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public/live.html'));
 });

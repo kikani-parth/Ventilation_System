@@ -12,6 +12,7 @@ const mongoClient = new MongoClient(uri, {
     }
 });
 
+// Connect to database
 function connectToDatabase() {
     try {
         // Connect the mongoClient to the server
@@ -19,7 +20,7 @@ function connectToDatabase() {
 
         const db = mongoClient.db(dbName);
 
-        // Specify and return the collection
+        // Specify and return the collection object
         return db.collection('SensorData2');
     } catch (error) {
         console.log("Error connecting to the database");

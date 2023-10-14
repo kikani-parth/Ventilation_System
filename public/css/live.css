@@ -1,7 +1,7 @@
 /* Global styles */
 body {
     font-family: Roboto, sans-serif;
-    background-color: #f0f0f0; /* Set the background color to a light grey */
+    background-color: #f0f0f0;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -60,9 +60,10 @@ h1 {
 
 /* Toggle Switch */
 .toggle-switch {
+    font-size: large;
     display: inline-block;
     position: relative;
-    width: 100px;
+    width: 120px;
     height: 30px;
     background-color: #ccc;
     border-radius: 15px;
@@ -82,12 +83,12 @@ h1 {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #f60; /* Default background color */
+    background-color: #f60;
     border-radius: 15px;
     transition: 0.4s;
     display: flex;
-    align-items: center; /* Center text vertically */
-    justify-content: center; /* Center text horizontally */
+    align-items: center;
+    justify-content: center;
 }
 
 .toggle-slider:before {
@@ -96,7 +97,7 @@ h1 {
     height: 100%;
     width: 50%;
     line-height: 30px;
-    background-color: #f60; /* Default background color */
+    background-color: #f60;
     border-radius: 50%;
     transition: 0.4s;
 }
@@ -119,7 +120,8 @@ input:checked + .toggle-slider:before {
 
 .pressure-slider,
 .fan-speed-slider {
-    margin-top: 20px;
+    font-size: large;
+    margin: 20px;
 }
 
 .pressure-input,

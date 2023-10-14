@@ -1,7 +1,7 @@
-const socket = new WebSocket('ws://localhost:3000/charts');
+const socket = new WebSocket('ws://localhost:3000');
 
-// Event listener for the Drop-down menu button
-let chartType = 'bar', previousChartType, doughnutChart;
+// Event listener for the Drop-down menu
+let chartType = 'bar', previousChartType, selectedChart;
 document.getElementById('chartType').addEventListener('change', () => {
     // Get the selected chart type
     chartType = document.getElementById('chartType').value;
@@ -17,13 +17,13 @@ document.getElementById('chartType').addEventListener('change', () => {
 // Event listener for the "Update Chart" button
 document.getElementById('updateChart').addEventListener('click', () => {
     // Get the selected chart type
-    doughnutChart = document.getElementById('chartType').value;
-    if (doughnutChart === 'doughnut') {
+    selectedChart = document.getElementById('chartType').value;
+    if (selectedChart === 'doughnut') {
         // Hide the page navigation
         document.getElementById('pagination').style.display = 'none';
 
         // Update the previous chart type
-        previousChartType = doughnutChart;
+        previousChartType = selectedChart;
 
         // Get nr value
         const nr = document.getElementById('nr').value;
@@ -109,6 +109,7 @@ function toggleInputDisplay() {
 let chartData, rawChartData, lineChartData, doughnutChartData, chart;
 socket.addEventListener('message', (event) => {
     chartData = JSON.parse(event.data);
+
     // If it is an MQTT message, exit the function
     if ('topic' in chartData) {
         return;
@@ -126,6 +127,8 @@ socket.addEventListener('message', (event) => {
         alert('No data available for the requested sample number!');
         return;
     }
+
+    // Store the chartData obtained from the server for different use cases
     rawChartData = chartData;
     lineChartData = chartData;
     doughnutChartData = chartData;
@@ -142,17 +145,6 @@ socket.addEventListener('message', (event) => {
 let canvasElement;
 
 function createChart() {
-    /*
-    // Extract the relevant data for the chart
-    chartData = mongoDBData.map(item => ({
-        nr: item.nr,
-        speed: item.speed,
-        pressure: item.pressure,
-        co2: item.co2,
-        rh: item.rh,
-        temp: item.temp
-    }));
-*/
     // Get the canvas element and its context
     canvasElement = document.getElementById('chartId').getContext('2d');
 
@@ -164,12 +156,8 @@ function createChart() {
         case 'line':
             createLineChart();
             break;
-        //case 'doughnut':
-        // createDoughnutChart();
-        // break;
         default:
             createDoughnutChart();
-            //console.error('Invalid chart type:', chartType);
             return;
     }
 }
@@ -259,6 +247,7 @@ function newBarChart(data) {
     })
 }
 
+/* If the chartData array contains more than 25 items slice the data and render partial charts for fast loading times and better visualization of the data */
 let currentPage = 1;        // Current page number
 const itemsPerPage = 25;    // Number of items to display per page
 function renderPartialChart() {
@@ -268,7 +257,7 @@ function renderPartialChart() {
     // Display the initially hidden page navigation buttons
     document.getElementById('pagination').style.display = 'block';
 
-    // Divide the chartData array into a smaller array whose length = 25
+    // Divide the chartData array into a smaller array
     const slicedData = chartData.slice(startIndex, endIndex);
 
     if (chartType === 'bar') {
@@ -426,18 +415,14 @@ function updateChart(data) {
             case 'line':
                 createLineChart();
                 break;
-            //case 'doughnut':
-            // createDoughnutChart();
-            // break;
             default:
                 createDoughnutChart();
-                //console.error('Invalid chart type:', chartType);
                 return;
         }
     }
     // If chart type has not changed, update the existing chart with new datasets
     else {
-        if (doughnutChart === 'doughnut') {
+        if (selectedChart === 'doughnut') {
             // Update the chart data (for doughnut chart)
             chart.data.datasets[0].data = [doughnutChartData.speed,
                 doughnutChartData.pressure,
@@ -459,8 +444,8 @@ function updateChart(data) {
 
                     // Update the correct Page number
                     document.getElementById('currentPage').textContent = 'Page ' + currentPage;
-
                 }
+
                 // Update the chart data (for bar chart or line chart)
                 chart.data.labels = data.map(item => item.nr);
                 chart.data.datasets[0].data = data.map(item => item.speed);
@@ -472,7 +457,7 @@ function updateChart(data) {
 
         }
 
-        // Update the previous chart
+        // Update the chart
         chart.update();
     }
 }
@@ -482,7 +467,7 @@ function goToPage(pageNumber) {
     updatePartialChart();
 }
 
-// Add event listeners for pagination buttons
+// Event listeners for pagination buttons
 document.getElementById('prevPage').addEventListener('click', () => {
     if (currentPage > 1) {
         // Store the previous chart type value
@@ -492,7 +477,8 @@ document.getElementById('prevPage').addEventListener('click', () => {
     }
 });
 document.getElementById('nextPage').addEventListener('click', () => {
-    const totalPages = Math.ceil(rawChartData.length / itemsPerPage);    // Total number of pages where chart will be displayed
+    // Get total number of pages for the whole chart to be displayed
+    const totalPages = Math.ceil(rawChartData.length / itemsPerPage);
 
     if (currentPage < totalPages) {
         // Store the previous chart type value
